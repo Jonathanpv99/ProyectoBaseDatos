@@ -7,6 +7,7 @@ package proyectofinalbd;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -43,6 +44,41 @@ public class Empleados {
         Conexion();
     
     }
+    public Empleados(){
+        
+    }
+    PreparedStatement ps;
+    public boolean ingresar(String user,String contra){
+        boolean p=false;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver"); 
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3307/minisuper?serverTimezone=UTC","root","root");
+            ps=con.prepareStatement("Select * from empleados where usuario=? and contrasena=? ");
+            ps.setString(7, user);
+            ps.setString(8, contra);
+            if (ps.execute()) {
+                p=true;
+            }else{
+                p=false;
+            }
+        } catch (ClassNotFoundException ex) {
+           Logger.getLogger(Empleados.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (SQLException ex) {
+           Logger.getLogger(Empleados.class.getName()).log(Level.SEVERE, null, ex);
+       }
+        
+        finally {
+            if (con != null) {
+                try {
+                    con.close();
+                    stmt.close();
+                } catch ( Exception e ) { 
+                         System.out.println( e.getMessage());
+                }
+            }
+        }  
+        return p;
+    }
     //aqui se hace la coneccion a la base de datos y se insertan los dayps del frmRegistro Empleados
     public void Conexion() {
         try {
@@ -56,7 +92,7 @@ public class Empleados {
   
                   stmt = con.createStatement(); 
                   stmt.executeUpdate("INSERT INTO empleados VALUES('" + getIdEmpleado() + "','"+
-                          getApellidos()+"','"+getNombre()+"','"+getDireccion()+"','"+getCiudad()+"','"+
+                          getApellidos()+"','"+getNombre()+"','"+getCiudad()+"','"+getDireccion()+"','"+
                           getPuesto()+"','"+getUsuario()+"','"+getContraseña()+"')");
                   System.out.println("Los valores han sido agregados a la base de datos ");
              }else{
@@ -83,7 +119,41 @@ public class Empleados {
          javax.swing.JOptionPane.showMessageDialog(null,"Registro exitoso! \n","AVISO!",javax.swing.JOptionPane.INFORMATION_MESSAGE);
         
     }
+    
+public void Conexion2() {
+        try {
+           
+            
+             Class.forName("com.mysql.cj.jdbc.Driver"); 
+             con = DriverManager.getConnection("jdbc:mysql://localhost:3307/minisuper?serverTimezone=UTC","root","root"); 
+             if ( con != null ) { 
+  
+                  stmt = con.createStatement(); 
+                  System.out.println("Los valores han sido agregados a la base de datos ");
+             }else{
+             System.out.println("Esta mamada no jala");
+             }
+                   
 
+       } catch (ClassNotFoundException ex) {
+           Logger.getLogger(Empleados.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (SQLException ex) {
+           Logger.getLogger(Empleados.class.getName()).log(Level.SEVERE, null, ex);
+       }
+        
+        finally {
+            if (con != null) {
+                try {
+                    con.close();
+                    stmt.close();
+                } catch ( Exception e ) { 
+                         System.out.println( e.getMessage());
+                }
+            }
+        }
+         javax.swing.JOptionPane.showMessageDialog(null,"Registro exitoso! \n","AVISO!",javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        
+    }
     
 
     public int getIdEmpleado() {
@@ -156,10 +226,8 @@ public class Empleados {
     }
 
     public void setUsuario(String Usuario) {
-        String usuario= Usuario.trim();
-        if(usuario.length()>0){
-            this.Usuario = usuario;
-        }
+            this.Usuario = Usuario;
+        
     }
 
     public String getContraseña() {
