@@ -1,0 +1,141 @@
+package proyectofinalbd;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author jonathan
+ */
+public class venta {
+    private int claveVenta;
+    private int claveEmp;
+    private String NombreClien;
+    private String Pedido;
+    private String Direccion;
+    private String CP;
+    
+    Connection con;
+    Statement stmt;
+    
+    public venta(int clave,int claveemp, String cliente, String pedido, String direccion, String cp){
+        setClaveVenta(clave);
+        setClaveEmp(claveemp);
+        setNombreClien(cliente);
+        setPedido(pedido);
+        setDireccion(direccion);
+        setCP(cp);
+        Conexion();
+    }
+    
+        public void Conexion() {
+        try {
+           
+            
+             Class.forName("com.mysql.cj.jdbc.Driver"); 
+             con = DriverManager.getConnection("jdbc:mysql://localhost:3307/minisuper?serverTimezone=UTC","root","root"); 
+             if ( con != null ) {
+                    System.out.println("Se ha establecido una conexión a la base de datos " +  
+                                       "\n " + "jdbc:mysql://127.0.0.1:3307/minisuper" ); 
+  
+                  stmt = con.createStatement(); 
+                  stmt.executeUpdate("INSERT INTO ventas VALUES('" + getClaveVenta() + "','"+
+                          getClaveEmp()+"','"+getNombreClien()+"','"+getPedido()+"','"+getDireccion()+"','"+getCP()+"')");
+                  
+                  
+                  System.out.println("Los valores han sido agregados a la base de datos ");
+             }else{
+             System.out.println("no sirve la coneccion");
+             }
+                   
+
+       } catch (ClassNotFoundException ex) {
+           Logger.getLogger(Empleados.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (SQLException ex) {
+           Logger.getLogger(Empleados.class.getName()).log(Level.SEVERE, null, ex);
+       }
+        
+        finally {
+            if (con != null) {
+                try {
+                    con.close();
+                    stmt.close();
+                } catch ( Exception e ) { 
+                         System.out.println( e.getMessage());
+                }
+            }
+        }
+         javax.swing.JOptionPane.showMessageDialog(null,"Registro exitoso! \n","AVISO!",javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        
+    }
+
+    public int getClaveVenta() {
+        return claveVenta;
+    }
+
+    public void setClaveVenta(int claveVenta) {
+        this.claveVenta = claveVenta;
+    }
+
+    public int getClaveEmp() {
+        return claveEmp;
+    }
+
+    public void setClaveEmp(int claveEmp) {
+        this.claveEmp = claveEmp;
+    }
+
+    public String getNombreClien() {
+        return NombreClien;
+    }
+
+    public void setNombreClien(String NombreClien) {
+        String nombre= NombreClien.trim();
+        if(nombre.length()>0){
+            this.NombreClien=nombre;
+        }
+    }
+
+    public String getPedido() {
+        return Pedido;
+    }
+
+    public void setPedido(String Pedido) {
+       String pedido= Pedido.trim();
+        if(pedido.length()>0){
+            this.Pedido=pedido;
+        }
+    }
+
+    public String getDireccion() {
+        return Direccion;
+    }
+
+    public void setDireccion(String Direccion) {
+        String direccion= Direccion.trim();
+        if(direccion.length()>0){
+            this.Direccion=direccion;
+        }
+    }
+
+    public String getCP() {
+        return CP;
+    }
+
+    public void setCP(String CP) {
+       String cp= CP.trim();
+        if(cp.length()>0){
+            this.CP=cp;
+        }
+    }
+    
+    
+    
+}
+
+
