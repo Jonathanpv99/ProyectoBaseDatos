@@ -1,0 +1,127 @@
+package proyectofinalbd;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author jonathan
+ */
+public class Productos {
+    private int clave;
+    private String Nombre;
+    private double Precio;
+    private int CantidadExis;
+    private int claveProve;
+    
+    Connection con;
+    Statement stmt;
+    
+    public Productos(int clave,String nombre,double precio,int cantidad, int clavepro){
+        setClave(clave);
+        setNombre(nombre);
+        setPrecio(precio);
+        setCantidadExis(cantidad);
+        setClaveProve(clavepro);
+        Conexion();
+    }
+    
+     //aqui se hace la coneccion a la base de datos y se insertan los datos del frmRegistro Productos
+    public void Conexion() {
+        try {
+           
+            
+             Class.forName("com.mysql.cj.jdbc.Driver"); 
+             con = DriverManager.getConnection("jdbc:mysql://localhost:3307/minisuper?serverTimezone=UTC","root","root"); 
+             if ( con != null ) {
+                    System.out.println("Se ha establecido una conexión a la base de datos " +  
+                                       "\n " + "jdbc:mysql://127.0.0.1:3307/minisuper" ); 
+  
+                  stmt = con.createStatement(); 
+                  stmt.executeUpdate("INSERT INTO productos VALUES('" + getClave() + "','"+
+                          getNombre()+"','"+getPrecio()+"','"+getCantidadExis()+"','"+getClaveProve()+"')");
+                  System.out.println("Los valores han sido agregados a la base de datos ");
+             }else{
+             System.out.println("no sirve la coneccion");
+             }
+                   
+
+       } catch (ClassNotFoundException ex) {
+           Logger.getLogger(Empleados.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (SQLException ex) {
+           Logger.getLogger(Empleados.class.getName()).log(Level.SEVERE, null, ex);
+       }
+        
+        finally {
+            if (con != null) {
+                try {
+                    con.close();
+                    stmt.close();
+                } catch ( Exception e ) { 
+                         System.out.println( e.getMessage());
+                }
+            }
+        }
+         javax.swing.JOptionPane.showMessageDialog(null,"Registro exitoso! \n","AVISO!",javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        
+    }
+
+    public int getClave() {
+        return clave;
+    }
+
+    public void setClave(int clave) {
+        this.clave = clave;
+    }
+
+    public String getNombre() {
+        return Nombre;
+    }
+
+    public void setNombre(String Nombre) {
+        String nombre= Nombre.trim();
+        if(nombre.length()>0){
+            this.Nombre=nombre;
+        }
+    }
+
+    public double getPrecio() {
+        return Precio;
+    }
+
+    public void setPrecio(double Precio) {
+       
+        if(Precio>0){
+            this.Precio=Precio;
+        }
+    }
+
+    public int getCantidadExis() {
+        return CantidadExis;
+    }
+
+    public void setCantidadExis(int CantidadExis) {
+        if(CantidadExis>=0){
+            this.CantidadExis=CantidadExis;
+        }
+        
+    }
+
+    public int getClaveProve() {
+        return claveProve;
+    }
+
+    public void setClaveProve(int claveProve) {
+        
+            this.claveProve=claveProve;
+        
+    }
+
+   
+    
+    
+}
