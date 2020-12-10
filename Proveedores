@@ -1,0 +1,116 @@
+package proyectofinalbd;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author jonathan
+ */
+public class Proveedores {
+    private int clave;
+    private String NombrePro;
+    private String Apellidos;
+    private String NombreEmpre;
+
+    Connection con;
+    Statement stmt;
+    
+public Proveedores(int clave,String nombre,String apellidos,String empresa){
+   setClave(clave);
+   setNombrePro(nombre);
+   setApellidos(apellidos);
+   setNombreEmpre(empresa);
+   Conexion();
+
+
+}
+
+ //aqui se hace la coneccion a la base de datos y se insertan los datos del frmRegistro Proveedores
+    public void Conexion() {
+        try {
+           
+            
+             Class.forName("com.mysql.cj.jdbc.Driver"); 
+             con = DriverManager.getConnection("jdbc:mysql://localhost:3307/minisuper?serverTimezone=UTC","root","root"); 
+             if ( con != null ) {
+                    System.out.println("Se ha establecido una conexión a la base de datos " +  
+                                       "\n " + "jdbc:mysql://127.0.0.1:3307/minisuper" ); 
+  
+                  stmt = con.createStatement(); 
+                  stmt.executeUpdate("INSERT INTO proveedores VALUES('" + getClave() + "','"+
+                          getNombrePro()+"','"+getApellidos()+"','"+getNombreEmpre()+"')");
+                  System.out.println("Los valores han sido agregados a la base de datos ");
+             }else{
+             System.out.println("Esta mamada no jala");
+             }
+                   
+
+       } catch (ClassNotFoundException ex) {
+           Logger.getLogger(Empleados.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (SQLException ex) {
+           Logger.getLogger(Empleados.class.getName()).log(Level.SEVERE, null, ex);
+       }
+        
+        finally {
+            if (con != null) {
+                try {
+                    con.close();
+                    stmt.close();
+                } catch ( Exception e ) { 
+                         System.out.println( e.getMessage());
+                }
+            }
+        }
+         javax.swing.JOptionPane.showMessageDialog(null,"Registro exitoso! \n","AVISO!",javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        
+    }
+
+    public int getClave() {
+        return clave;
+    }
+
+    public void setClave(int clave) {
+        this.clave = clave;
+    }
+
+    public String getNombrePro() {
+        return NombrePro;
+    }
+
+    public void setNombrePro(String NombrePro) {
+        String nombre= NombrePro.trim();
+        if(nombre.length()>0){
+            this.NombrePro=nombre;
+        }
+    }
+
+    public String getApellidos() {
+        return Apellidos;
+    }
+
+    public void setApellidos(String Apellidos) {
+        String apellido= Apellidos.trim();
+        if(apellido.length()>0){
+            this.Apellidos=apellido;
+        }
+    }
+
+    public String getNombreEmpre() {
+        return NombreEmpre;
+    }
+
+    public void setNombreEmpre(String NombreEmpre) {
+        String empresa= NombreEmpre.trim();
+        if(empresa.length()>0){
+            this.NombreEmpre=empresa;
+        }
+    }
+    
+    
+
+}
