@@ -1,0 +1,178 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package proyectofinalbd;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+
+/**
+ *
+ * @author jonathan
+ */
+public class Empleados {
+    private int IdEmpleado;
+    private String Apellidos;
+    private String Nombre;
+    private String Direccion;
+    private String Ciudad;
+    private String Puesto;
+    private String Usuario;
+    private String Contraseña;
+    
+    Connection con;
+    Statement stmt;
+    public Empleados(int id,String apellidos,String nombre,String direccion, String ciudad, String puesto, String usuario, String contraseña){
+        setIdEmpleao(id);
+        setApellidos(apellidos);
+        setNombre(nombre);
+        setDireccion(direccion);
+        setCiudad(ciudad);
+        setPuesto(puesto);
+        setUsuario(usuario);
+        setContraseña(contraseña);
+        
+        Conexion();
+    
+    }
+    //aqui se hace la coneccion a la base de datos y se insertan los dayps del frmRegistro Empleados
+    public void Conexion() {
+        try {
+           
+            
+             Class.forName("com.mysql.cj.jdbc.Driver"); 
+             con = DriverManager.getConnection("jdbc:mysql://localhost:3307/minisuper?serverTimezone=UTC","root","root"); 
+             if ( con != null ) {
+                    System.out.println("Se ha establecido una conexión a la base de datos " +  
+                                       "\n " + "jdbc:mysql://127.0.0.1:3307/minisuper" ); 
+  
+                  stmt = con.createStatement(); 
+                  stmt.executeUpdate("INSERT INTO empleados VALUES('" + getIdEmpleado() + "','"+
+                          getApellidos()+"','"+getNombre()+"','"+getDireccion()+"','"+getCiudad()+"','"+
+                          getPuesto()+"','"+getUsuario()+"','"+getContraseña()+"')");
+                  System.out.println("Los valores han sido agregados a la base de datos ");
+             }else{
+             System.out.println("Esta mamada no jala");
+             }
+                   
+
+       } catch (ClassNotFoundException ex) {
+           Logger.getLogger(Empleados.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (SQLException ex) {
+           Logger.getLogger(Empleados.class.getName()).log(Level.SEVERE, null, ex);
+       }
+        
+        finally {
+            if (con != null) {
+                try {
+                    con.close();
+                    stmt.close();
+                } catch ( Exception e ) { 
+                         System.out.println( e.getMessage());
+                }
+            }
+        }
+         javax.swing.JOptionPane.showMessageDialog(null,"Registro exitoso! \n","AVISO!",javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        
+    }
+
+    
+
+    public int getIdEmpleado() {
+        return IdEmpleado;
+    }
+
+    public void setIdEmpleao(int idempleado) {
+       
+            this.IdEmpleado=idempleado;
+        
+    }
+
+    public String getApellidos() {
+        return Apellidos;
+    }
+
+    public void setApellidos(String Apellidos) {
+        String apellidos= Apellidos.trim();
+        if(apellidos.length()>0){
+            this.Apellidos=apellidos;
+        }
+    }
+
+    public String getNombre() {
+        return Nombre;
+    }
+
+    public void setNombre(String Nombre) {
+        String nombre= Nombre.trim();
+        if(nombre.length()>0){
+            this.Nombre=nombre;
+        }
+    }
+
+    public String getDireccion() {
+        return Direccion;
+    }
+
+    public void setDireccion(String Direccion) {
+        String direccion= Direccion.trim();
+        if(direccion.length()>0){
+            this.Direccion=direccion;
+        }
+    }
+
+    public String getCiudad() {
+        return Ciudad;
+    }
+
+    public void setCiudad(String Ciudad) {
+        String ciudad= Ciudad.trim();
+        if(ciudad.length()>0){
+            this.Ciudad=ciudad;
+        }
+    }
+
+    public String getPuesto() {
+        return Puesto;
+    }
+
+    public void setPuesto(String Puesto) {
+        String puesto= Puesto.trim();
+        if(puesto.length()>0){
+            this.Puesto=puesto;
+        }
+    }
+
+    public String getUsuario() {
+        return Usuario;
+    }
+
+    public void setUsuario(String Usuario) {
+        String usuario= Usuario.trim();
+        if(usuario.length()>0){
+            this.Usuario = usuario;
+        }
+    }
+
+    public String getContraseña() {
+        return Contraseña;
+    }
+
+    public void setContraseña(String Contraseña) {
+        String contraseña=Contraseña.trim();
+        if(contraseña.length()>0){
+            this.Contraseña=contraseña;
+        }
+        this.Contraseña = Contraseña;
+    }
+    
+    
+}
